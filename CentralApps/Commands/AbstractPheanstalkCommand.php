@@ -7,7 +7,7 @@ abstract class AbstractPheanstalkCommand extends \Symfony\Component\Console\Comm
 
 	public function setContainer($container)
 	{
-		if (!is_array($container) && ! ($container instanceof '\ArrayAccess')) {
+		if (!is_array($container) && ! ($container instanceof \ArrayAccess)) {
 			throw new \InvalidArgumentException("Container must either be an array or implement \ArrayAccess");
 		}
 
