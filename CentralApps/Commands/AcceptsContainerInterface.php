@@ -3,5 +3,5 @@ namespace CentralApps\Commands;
 
 interface AcceptsContainerInterface
 {
-	public function setContainer($container);
+    public function setContainer($container);
 }
