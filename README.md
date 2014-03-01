@@ -23,37 +23,37 @@ Install / update composer.
 ## Setup
 
 Create a console file within your application; you need to provide a setup pheanstalk object connected to your beanstalkd service.
+```php
+#!/usr/bin/env php
+<?php
 
-    #!/usr/bin/env php
-    <?php
+require_once(__DIR__.'/vendor/autoload.php');
+$container = array(
+    'pheanstalk' => PHEANSTALK_GOES_HERE
+);
 
-    require_once(__DIR__.'/vendor/autoload.php');
-    $container = array(
-        'pheanstalk' => PHEANSTALK_GOES_HERE
-    );
+$cli_application = new \Symfony\Component\Console\Application();
 
-    $cli_application = new \Symfony\Component\Console\Application();
+$commands = array(
+    '\CentralApps\Commands\PheanstalkStatsCommand',
+    '\CentralApps\Commands\PheanstalkListCommand',
+    '\CentralApps\Commands\PheanstalkPeekReadyCommand',
+    '\CentralApps\Commands\PheanstalkDeleteCommand',
+    '\CentralApps\Commands\PheanstalkFlushCommand'
+);
 
-    $commands = array(
-        '\CentralApps\Commands\PheanstalkStatsCommand',
-        '\CentralApps\Commands\PheanstalkListCommand',
-        '\CentralApps\Commands\PheanstalkPeekReadyCommand',
-        '\CentralApps\Commands\PheanstalkDeleteCommand',
-        '\CentralApps\Commands\PheanstalkFlushCommand'
-    );
+foreach ($commands as $command) {
+    $command = new $command();
 
-    foreach ($commands as $command) {
-        $command = new $command();
-
-        if ($command instanceof /CentralApps\Commands\AcceptsContainerInterface) {
-            $command->setContainer($container);
-        }
-
-        $cli_application->add($command);
+    if ($command instanceof \CentralApps\Commands\AcceptsContainerInterface) {
+        $command->setContainer($container);
     }
 
-    $cli_application->run();
+    $cli_application->add($command);
+}
 
+$cli_application->run();
+```
 ## Usage
 
     php console pheanstlk:list
